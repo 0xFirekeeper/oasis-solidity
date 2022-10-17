@@ -6,11 +6,6 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 
 contract OasisToken is ERC20, Ownable {
-    /// ERRORS///
-
-    error NotEnoughTokens();
-    error MustApproveTokens();
-
     /// STATE VARIABLES ///
 
     uint256 public tokensPerCrazyCamel;
@@ -45,10 +40,10 @@ contract OasisToken is ERC20, Ownable {
 
     function claim(uint256[] memory tokenIds) external {
         uint256 burnAmount = tokenIds.length;
-        if (burnAmount < 1) revert NotEnoughTokens();
+        if (burnAmount < 1) revert("Must burn at least 1 token");
 
         for (uint256 i = 0; i < burnAmount; i++)
-            if (IERC721(crazyCamels).getApproved(tokenIds[i]) != address(this)) revert MustApproveTokens();
+            if (IERC721(crazyCamels).getApproved(tokenIds[i]) != address(this)) revert("Must Approve Tokens");
 
         for (uint256 i = 0; i < burnAmount; i++)
             IERC721(crazyCamels).transferFrom(msg.sender, oasisGraveyard, tokenIds[i]);
