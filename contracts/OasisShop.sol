@@ -5,8 +5,9 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/interfaces/IERC721.sol";
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract OasisShop is Pausable, Ownable {
+contract OasisShop is Pausable, Ownable, ReentrancyGuard {
     /// STATE VARIABLES ///
 
     address public treasury;
@@ -22,11 +23,11 @@ contract OasisShop is Pausable, Ownable {
 
     /// OWNER FUNCTIONS ///
 
-    function pause() public onlyOwner {
+    function pause() public onlyOwner nonReentrant {
         _pause();
     }
 
-    function unpause() public onlyOwner {
+    function unpause() public onlyOwner nonReentrant {
         _unpause();
     }
 
@@ -37,7 +38,7 @@ contract OasisShop is Pausable, Ownable {
         uint256[] memory _ecTokenIds,
         uint256 _ostPricePerEc,
         address _oasisGraveyard
-    ) public onlyOwner {
+    ) public onlyOwner nonReentrant {
         treasury = _treasury;
         ec = _ec;
         ost = _ost;
@@ -48,7 +49,7 @@ contract OasisShop is Pausable, Ownable {
 
     /// EXTERNAL FUNCTIONS ///
 
-    function purchaseEC() external whenNotPaused {
+    function purchaseEC() external whenNotPaused nonReentrant {
         if (ecTokenIds.length < 1) revert("No available EC Token Ids");
         if (IERC721(ec).balanceOf(treasury) < 1) revert("Treasury has no ECs");
         if (IERC20(ost).balanceOf(msg.sender) < ostPricePerEc) revert("Not Enough $OST Tokens");

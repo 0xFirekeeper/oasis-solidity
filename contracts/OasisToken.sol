@@ -4,8 +4,9 @@ pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-contract OasisToken is ERC20, Ownable {
+contract OasisToken is ERC20, Ownable, ReentrancyGuard {
     /// STATE VARIABLES ///
 
     uint256 public tokensPerCrazyCamel;
@@ -26,19 +27,19 @@ contract OasisToken is ERC20, Ownable {
         address _crazyCamels,
         address _oasisGraveyard,
         uint256 _tokensPerCrazyCamel
-    ) external onlyOwner {
+    ) external onlyOwner nonReentrant {
         crazyCamels = _crazyCamels;
         oasisGraveyard = _oasisGraveyard;
         tokensPerCrazyCamel = _tokensPerCrazyCamel;
     }
 
-    function mint(address to, uint256 amount) public onlyOwner {
+    function mint(address to, uint256 amount) public onlyOwner nonReentrant {
         _mint(to, amount);
     }
 
     /// EXTERNAL FUNCTIONS ///
 
-    function claim(uint256[] memory tokenIds) external {
+    function claim(uint256[] memory tokenIds) external nonReentrant {
         uint256 burnAmount = tokenIds.length;
         if (burnAmount < 1) revert("Must burn at least 1 token");
 
