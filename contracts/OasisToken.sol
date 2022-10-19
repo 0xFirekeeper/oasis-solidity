@@ -14,7 +14,7 @@ contract OasisToken is ERC20, Ownable {
 
     /// EVENTS ///
 
-    event Claimed(address indexed claimer, uint256 amount);
+    event ClaimedOST(address indexed claimer, uint256 indexed ostAmount, uint256[] ccIds);
 
     /// CONSTRUCTOR ///
 
@@ -36,7 +36,7 @@ contract OasisToken is ERC20, Ownable {
         _mint(to, amount);
     }
 
-    /// USER FUNCTIONS ///
+    /// EXTERNAL FUNCTIONS ///
 
     function claim(uint256[] memory tokenIds) external {
         uint256 burnAmount = tokenIds.length;
@@ -51,6 +51,6 @@ contract OasisToken is ERC20, Ownable {
         uint256 claimableAmount = burnAmount * tokensPerCrazyCamel;
         _mint(msg.sender, claimableAmount);
 
-        emit Claimed(msg.sender, claimableAmount);
+        emit ClaimedOST(msg.sender, claimableAmount, tokenIds);
     }
 }

@@ -7,12 +7,20 @@ import "@openzeppelin/contracts/interfaces/IERC721.sol";
 import "@openzeppelin/contracts/interfaces/IERC20.sol";
 
 contract OasisShop is Pausable, Ownable {
+    /// STATE VARIABLES ///
+
     address public treasury;
     address public ec;
     address public ost;
     uint256[] public ecTokenIds;
     uint256 public ostPricePerEc;
     address public oasisGraveyard;
+
+    /// EVENTS ///
+
+    event PurchasedEC(address indexed buyer, uint256 indexed ostSpent, uint256 ecId, uint256 ecsLeft);
+
+    /// OWNER FUNCTIONS ///
 
     function pause() public onlyOwner {
         _pause();
@@ -38,9 +46,11 @@ contract OasisShop is Pausable, Ownable {
         oasisGraveyard = _oasisGraveyard;
     }
 
+    /// EXTERNAL FUNCTIONS ///
+
     function purchaseEC() external whenNotPaused {
         if (ecTokenIds.length < 1) revert("No available EC Token Ids");
-        if (IERC721(treasury).balanceOf(treasury) < 1) revert("Treasury has no ECs");
+        if (IERC721(ec).balanceOf(treasury) < 1) revert("Treasury has no ECs");
         if (IERC20(ost).balanceOf(msg.sender) < ostPricePerEc) revert("Not Enough $OST Tokens");
 
         uint256 lastTokenId = ecTokenIds[ecTokenIds.length - 1];
@@ -50,6 +60,8 @@ contract OasisShop is Pausable, Ownable {
 
         IERC721(ec).transferFrom(treasury, msg.sender, lastTokenId);
         ecTokenIds.pop();
+
+        emit PurchasedEC(msg.sender, ostPricePerEc, lastTokenId, ecTokenIds.length);
     }
 
     function getEcLeft() external view returns (uint256 ecsLeft_) {
