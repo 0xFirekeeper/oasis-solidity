@@ -1,0 +1,66 @@
+{
+    "contractName": "OasisEscrow",
+    "abi": [],
+    "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"d:/Projects/The-Oasis-Solidity/contracts/OasisEscrow.sol\":\"OasisEscrow\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"d:/Projects/The-Oasis-Solidity/contracts/OasisEscrow.sol\":{\"keccak256\":\"0xc99734388be068e00f40cddcea25fbf642bb81a5e5efe53f2d78f8739d25376f\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://c7c98203fcfc0247b730ad26530dd3848b2989ae54af80d8e4367054efc08487\",\"dweb:/ipfs/QmYzJLsGUYewJc58RdVDx2Be1bHSYvAMR26xxyQYM5yEzk\"]}},\"version\":1}",
+    "bytecode": "6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212202b43a02d0e49dab4e8f35fdbea31091f63531d0c40a35ab6a991b8b89c52793864736f6c63430008110033",
+    "deployedBytecode": "6080604052600080fdfea26469706673582212202b43a02d0e49dab4e8f35fdbea31091f63531d0c40a35ab6a991b8b89c52793864736f6c63430008110033",
+    "sourceMap": "60:23:1:-:0;;;;;;;;;;;;;;;;;;;",
+    "deployedSourceMap": "60:23:1:-:0;;;;;",
+    "sourcePath": "d:/Projects/The-Oasis-Solidity/contracts/OasisEscrow.sol",
+    "compiler": {
+        "name": "solc",
+        "version": "0.8.17+commit.8df45f5f"
+    },
+    "ast": {
+        "absolutePath": "d:/Projects/The-Oasis-Solidity/contracts/OasisEscrow.sol",
+        "exportedSymbols": {
+            "OasisEscrow": [
+                91
+            ]
+        },
+        "id": 92,
+        "license": "MIT",
+        "nodeType": "SourceUnit",
+        "nodes": [
+            {
+                "id": 90,
+                "literals": [
+                    "solidity",
+                    "^",
+                    "0.8",
+                    ".4"
+                ],
+                "nodeType": "PragmaDirective",
+                "src": "33:23:1"
+            },
+            {
+                "abstract": false,
+                "baseContracts": [],
+                "canonicalName": "OasisEscrow",
+                "contractDependencies": [],
+                "contractKind": "contract",
+                "fullyImplemented": true,
+                "id": 91,
+                "linearizedBaseContracts": [
+                    91
+                ],
+                "name": "OasisEscrow",
+                "nameLocation": "69:11:1",
+                "nodeType": "ContractDefinition",
+                "nodes": [],
+                "scope": 92,
+                "src": "60:23:1",
+                "usedErrors": []
+            }
+        ],
+        "src": "33:52:1"
+    },
+    "functionHashes": {},
+    "gasEstimates": {
+        "creation": {
+            "codeDepositCost": "12600",
+            "executionCost": "66",
+            "totalCost": "12666"
+        }
+    }
+}
