@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/interfaces/IERC20.sol";
 /**
  * @author  . 0xFirekeeper
  * @title   . Oasis Shop
- * @notice  . Scalable Shop for the Oasis. Supports any ERC-20 or ERC-721 Enumerable to it. Users can purchase with $ETH or $OST.
+ * @notice  . Scalable Shop for the Oasis. Supports any 18 decimal ERC-20 or ERC-721 Enumerable. Users can purchase with $ETH or $OST.
  */
 
 contract OasisShop is Pausable, Ownable {
@@ -101,10 +101,12 @@ contract OasisShop is Pausable, Ownable {
             if (!IERC20(ost).transferFrom(msg.sender, oasisGraveyard, totalCost)) revert TransferFailed();
         // Process transfers
         if (item.is20) {
+            // Add decimals
+            uint256 erc20quantity = _quantity * 10**18;
             // Check treasury20 balance
-            if (_quantity > IERC20(_contract).balanceOf(treasury)) revert TreasuryBalanceTooLow();
-            // Transfer20 from treasury
-            if (!IERC20(_contract).transferFrom(treasury, msg.sender, _quantity)) revert TransferFailed();
+            if (erc20quantity > IERC20(_contract).balanceOf(treasury)) revert TreasuryBalanceTooLow();
+            // Transfer20 from treasury (add decimals)
+            if (!IERC20(_contract).transferFrom(treasury, msg.sender, erc20quantity)) revert TransferFailed();
         } else if (item.is721) {
             // Check treasury721 balance and fetch random 721 token ids
             uint256[] memory randomTokenIds = getRandomTokenIds(_contract, _quantity);
