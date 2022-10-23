@@ -2,7 +2,6 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/interfaces/IERC721.sol";
 
@@ -12,60 +11,62 @@ import "@openzeppelin/contracts/interfaces/IERC721.sol";
  * @notice  . Standard ERC-20 for the Oasis. Mintable by assigned Minters or by burning a Crazy Camels NFT.
  */
 
-contract OasisToken is ERC20, Ownable, ReentrancyGuard {
+contract OasisToken is ERC20, Ownable {
+    /// ERRORS ///
+
+    error NotMinter();
+    error InvalidArguments();
+
     /// STATE VARIABLES ///
 
-    address public crazyCamels;
-    address public oasisGraveyard;
-    uint256 public tokensPerCrazyCamel;
+    address public immutable crazyCamels;
+    address public immutable oasisGraveyard;
+    uint128 public immutable tokensPerCrazyCamel;
     mapping(address => bool) public minter;
 
     /// EVENTS ///
 
-    event ClaimedOST(address indexed claimer, uint256 ostAmount, uint256[] ccIds);
+    event Claimed(address indexed claimer, uint256 indexed camelsBurned);
 
     /// CONSTRUCTOR ///
 
-    constructor() ERC20("Oasis Token", "OST") {}
-
-    /// OWNER FUNCTIONS ///
-
-    function setStateVariables(
+    constructor(
         address _crazyCamels,
         address _oasisGraveyard,
-        uint256 _tokensPerCrazyCamel
-    ) external onlyOwner nonReentrant {
+        uint128 _tokensPerCrazyCamel
+    ) ERC20("Oasis Token", "OST") {
         crazyCamels = _crazyCamels;
         oasisGraveyard = _oasisGraveyard;
         tokensPerCrazyCamel = _tokensPerCrazyCamel;
     }
 
-    function addMinter(address _minter) external onlyOwner nonReentrant {
+    /// OWNER FUNCTIONS ///
+
+    function addMinter(address _minter) external onlyOwner {
         minter[_minter] = true;
     }
 
-    function removeMinter(address _minter) external onlyOwner nonReentrant {
+    function removeMinter(address _minter) external onlyOwner {
         minter[_minter] = false;
     }
 
     /// MINTER FUNCTIONS ///
 
-    function mint(address _to, uint256 _amount) external nonReentrant {
-        require(minter[msg.sender], "Must be an assigned Minter");
-
+    function mint(address _to, uint256 _amount) external {
+        if (!minter[msg.sender]) revert NotMinter();
         _mint(_to, _amount);
     }
 
     /// USER FUNCTIONS ///
 
-    function claim(uint256[] memory _tokenIds) external nonReentrant {
-        require(_tokenIds.length > 0, "Must burn at least one Crazy Camel");
+    function claim(uint256[] calldata _tokenIds) external {
+        if (1 > _tokenIds.length) revert InvalidArguments();
 
         for (uint256 i = 0; i < _tokenIds.length; i++)
             IERC721(crazyCamels).transferFrom(msg.sender, oasisGraveyard, _tokenIds[i]);
 
         _mint(msg.sender, _tokenIds.length * tokensPerCrazyCamel);
 
-        emit ClaimedOST(msg.sender, _tokenIds.length * tokensPerCrazyCamel, _tokenIds);
+        emit Claimed(msg.sender, _tokenIds.length);
     }
 }

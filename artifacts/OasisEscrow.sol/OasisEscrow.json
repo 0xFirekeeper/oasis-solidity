@@ -13,7 +13,7 @@
       "linkReferences": {},
       "object": "6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea26469706673582212201ad48d381589f90119639396b954d42850a3ff0af7cad1a602fd6b5fa1213b6764736f6c634300080d0033",
       "opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE CALLVALUE DUP1 ISZERO PUSH1 0xF JUMPI PUSH1 0x0 DUP1 REVERT JUMPDEST POP PUSH1 0x3F DUP1 PUSH1 0x1D PUSH1 0x0 CODECOPY PUSH1 0x0 RETURN INVALID PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 BYTE 0xD4 DUP14 CODESIZE ISZERO DUP10 0xF9 ADD NOT PUSH4 0x9396B954 0xD4 0x28 POP LOG3 SELFDESTRUCT EXP 0xF7 0xCA 0xD1 0xA6 MUL REVERT PUSH12 0x5FA1213B6764736F6C634300 ADDMOD 0xD STOP CALLER ",
-      "sourceMap": "60:23:22:-:0;;;;;;;;;;;;;;;;;;;"
+      "sourceMap": "60:23:21:-:0;;;;;;;;;;;;;;;;;;;"
     },
     "deployedBytecode": {
       "functionDebugData": {},
@@ -22,7 +22,7 @@
       "linkReferences": {},
       "object": "6080604052600080fdfea26469706673582212201ad48d381589f90119639396b954d42850a3ff0af7cad1a602fd6b5fa1213b6764736f6c634300080d0033",
       "opcodes": "PUSH1 0x80 PUSH1 0x40 MSTORE PUSH1 0x0 DUP1 REVERT INVALID LOG2 PUSH5 0x6970667358 0x22 SLT KECCAK256 BYTE 0xD4 DUP14 CODESIZE ISZERO DUP10 0xF9 ADD NOT PUSH4 0x9396B954 0xD4 0x28 POP LOG3 SELFDESTRUCT EXP 0xF7 0xCA 0xD1 0xA6 MUL REVERT PUSH12 0x5FA1213B6764736F6C634300 ADDMOD 0xD STOP CALLER ",
-      "sourceMap": "60:23:22:-:0;;;;;"
+      "sourceMap": "60:23:21:-:0;;;;;"
     },
     "gasEstimates": {
       "creation": {
@@ -37,136 +37,136 @@
           "begin": 60,
           "end": 83,
           "name": "PUSH",
-          "source": 22,
+          "source": 21,
           "value": "80"
         },
         {
           "begin": 60,
           "end": 83,
           "name": "PUSH",
-          "source": 22,
+          "source": 21,
           "value": "40"
         },
         {
           "begin": 60,
           "end": 83,
           "name": "MSTORE",
-          "source": 22
+          "source": 21
         },
         {
           "begin": 60,
           "end": 83,
           "name": "CALLVALUE",
-          "source": 22
+          "source": 21
         },
         {
           "begin": 60,
           "end": 83,
           "name": "DUP1",
-          "source": 22
+          "source": 21
         },
         {
           "begin": 60,
           "end": 83,
           "name": "ISZERO",
-          "source": 22
+          "source": 21
         },
         {
           "begin": 60,
           "end": 83,
           "name": "PUSH [tag]",
-          "source": 22,
+          "source": 21,
           "value": "1"
         },
         {
           "begin": 60,
           "end": 83,
           "name": "JUMPI",
-          "source": 22
+          "source": 21
         },
         {
           "begin": 60,
           "end": 83,
           "name": "PUSH",
-          "source": 22,
+          "source": 21,
           "value": "0"
         },
         {
           "begin": 60,
           "end": 83,
           "name": "DUP1",
-          "source": 22
+          "source": 21
         },
         {
           "begin": 60,
           "end": 83,
           "name": "REVERT",
-          "source": 22
+          "source": 21
         },
         {
           "begin": 60,
           "end": 83,
           "name": "tag",
-          "source": 22,
+          "source": 21,
           "value": "1"
         },
         {
           "begin": 60,
           "end": 83,
           "name": "JUMPDEST",
-          "source": 22
+          "source": 21
         },
         {
           "begin": 60,
           "end": 83,
           "name": "POP",
-          "source": 22
+          "source": 21
         },
         {
           "begin": 60,
           "end": 83,
           "name": "PUSH #[$]",
-          "source": 22,
+          "source": 21,
           "value": "0000000000000000000000000000000000000000000000000000000000000000"
         },
         {
           "begin": 60,
           "end": 83,
           "name": "DUP1",
-          "source": 22
+          "source": 21
         },
         {
           "begin": 60,
           "end": 83,
           "name": "PUSH [$]",
-          "source": 22,
+          "source": 21,
           "value": "0000000000000000000000000000000000000000000000000000000000000000"
         },
         {
           "begin": 60,
           "end": 83,
           "name": "PUSH",
-          "source": 22,
+          "source": 21,
           "value": "0"
         },
         {
           "begin": 60,
           "end": 83,
           "name": "CODECOPY",
-          "source": 22
+          "source": 21
         },
         {
           "begin": 60,
           "end": 83,
           "name": "PUSH",
-          "source": 22,
+          "source": 21,
           "value": "0"
         },
         {
           "begin": 60,
           "end": 83,
           "name": "RETURN",
-          "source": 22
+          "source": 21
         }
       ],
       ".data": {
@@ -177,40 +177,40 @@
               "begin": 60,
               "end": 83,
               "name": "PUSH",
-              "source": 22,
+              "source": 21,
               "value": "80"
             },
             {
               "begin": 60,
               "end": 83,
               "name": "PUSH",
-              "source": 22,
+              "source": 21,
               "value": "40"
             },
             {
               "begin": 60,
               "end": 83,
               "name": "MSTORE",
-              "source": 22
+              "source": 21
             },
             {
               "begin": 60,
               "end": 83,
               "name": "PUSH",
-              "source": 22,
+              "source": 21,
               "value": "0"
             },
             {
               "begin": 60,
               "end": 83,
               "name": "DUP1",
-              "source": 22
+              "source": 21
             },
             {
               "begin": 60,
               "end": 83,
               "name": "REVERT",
-              "source": 22
+              "source": 21
             }
           ]
         }
