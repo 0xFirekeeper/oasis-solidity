@@ -145,8 +145,8 @@ contract OasisLend is Ownable, Pausable {
         // TODO: Check if contract owns ALL tokens
 
         // Transfer their tokens from contract to msg.sender
-        for (uint256 i = 0; i < loan[msg.sender].tokenIds.length; i++)
-            IERC721(loan[msg.sender].collection).transferFrom(address(this), msg.sender, loan[msg.sender].tokenIds[i]);
+        // for (uint256 i = 0; i < loan[msg.sender].tokenIds.length; i++)
+        //     IERC721(loan[msg.sender].collection).transferFrom(address(this), msg.sender, loan[msg.sender].tokenIds[i]);
 
         // Delete loan
         delete loan[msg.sender];
