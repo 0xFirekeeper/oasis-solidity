@@ -1,11 +1,25 @@
 {
     "contractName": "OasisGraveyard",
-    "abi": [],
-    "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"d:/Projects/The-Oasis-Solidity/contracts/OasisGraveyard.sol\":\"OasisGraveyard\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"d:/Projects/The-Oasis-Solidity/contracts/OasisGraveyard.sol\":{\"keccak256\":\"0xf6c6afa3a27f2c8bc8745b228e2b7b927be07fc1a6c102306f856ed3ace69da3\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://cc0c2215d15d39a03ac8a331817e647d19717b16363b1abe4922999ae9baabb6\",\"dweb:/ipfs/QmZupRVvAUCxHczC7jqMCRCHWio3jQsPJSXKmGR7Sp7vG7\"]}},\"version\":1}",
-    "bytecode": "6080604052348015600f57600080fd5b50603f80601d6000396000f3fe6080604052600080fdfea2646970667358221220b5feb00125e04fa7dc3963ae5f725f454998e8fdfe54faf08ffbfffd9a27aac464736f6c63430008110033",
-    "deployedBytecode": "6080604052600080fdfea2646970667358221220b5feb00125e04fa7dc3963ae5f725f454998e8fdfe54faf08ffbfffd9a27aac464736f6c63430008110033",
-    "sourceMap": "60:26:2:-:0;;;;;;;;;;;;;;;;;;;",
-    "deployedSourceMap": "60:26:2:-:0;;;;;",
+    "abi": [
+        {
+            "inputs": [],
+            "name": "farewell",
+            "outputs": [
+                {
+                    "internalType": "string",
+                    "name": "",
+                    "type": "string"
+                }
+            ],
+            "stateMutability": "view",
+            "type": "function"
+        }
+    ],
+    "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"farewell\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"author\":\". 0xFirekeeper\",\"kind\":\"dev\",\"methods\":{},\"title\":\". Oasis Graveyard\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\". The resting place of burned Crazy Camels and Oasis Tokens.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"d:/Projects/The-Oasis-Solidity/contracts/OasisGraveyard.sol\":\"OasisGraveyard\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"d:/Projects/The-Oasis-Solidity/contracts/OasisGraveyard.sol\":{\"keccak256\":\"0x26bf46c7ee85c769b74e3ee97974fad188cf2354ae95663fd340ae7bdbfc9af0\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://eeda6ff8629f7fe69d26cbbb194dc4ca038196eafbe57fd3726b2a7706773d8f\",\"dweb:/ipfs/QmWE5WJdy3JemwjmUmg6mya6VNFrhhHTiM3uFrxUbhzdNg\"]}},\"version\":1}",
+    "bytecode": "60c0604052601460809081527f5265717569657363616e7420496e20506163652e00000000000000000000000060a05260009061003c90826100ee565b5034801561004957600080fd5b506101ad565b634e487b7160e01b600052604160045260246000fd5b600181811c9082168061007957607f821691505b60208210810361009957634e487b7160e01b600052602260045260246000fd5b50919050565b601f8211156100e957600081815260208120601f850160051c810160208610156100c65750805b601f850160051c820191505b818110156100e5578281556001016100d2565b5050505b505050565b81516001600160401b038111156101075761010761004f565b61011b816101158454610065565b8461009f565b602080601f83116001811461015057600084156101385750858301515b600019600386901b1c1916600185901b1785556100e5565b600085815260208120601f198616915b8281101561017f57888601518255948401946001909101908401610160565b508582101561019d5787850151600019600388901b60f8161c191681555b5050505050600190811b01905550565b61019a806101bc6000396000f3fe608060405234801561001057600080fd5b506004361061002b5760003560e01c8063eca386af14610030575b600080fd5b61003861004e565b60405161004591906100dc565b60405180910390f35b6000805461005b9061012a565b80601f01602080910402602001604051908101604052809291908181526020018280546100879061012a565b80156100d45780601f106100a9576101008083540402835291602001916100d4565b820191906000526020600020905b8154815290600101906020018083116100b757829003601f168201915b505050505081565b600060208083528351808285015260005b81811015610109578581018301518582016040015282016100ed565b506000604082860101526040601f19601f8301168501019250505092915050565b600181811c9082168061013e57607f821691505b60208210810361015e57634e487b7160e01b600052602260045260246000fd5b5091905056fea26469706673582212204ad3a9d119ba58262411183df6beb013fb0617527a9198c886b191e4e5c3b39064736f6c63430008110033",
+    "deployedBytecode": "608060405234801561001057600080fd5b506004361061002b5760003560e01c8063eca386af14610030575b600080fd5b61003861004e565b60405161004591906100dc565b60405180910390f35b6000805461005b9061012a565b80601f01602080910402602001604051908101604052809291908181526020018280546100879061012a565b80156100d45780601f106100a9576101008083540402835291602001916100d4565b820191906000526020600020905b8154815290600101906020018083116100b757829003601f168201915b505050505081565b600060208083528351808285015260005b81811015610109578581018301518582016040015282016100ed565b506000604082860101526040601f19601f8301168501019250505092915050565b600181811c9082168061013e57607f821691505b60208210810361015e57634e487b7160e01b600052602260045260246000fd5b5091905056fea26469706673582212204ad3a9d119ba58262411183df6beb013fb0617527a9198c886b191e4e5c3b39064736f6c63430008110033",
+    "sourceMap": "236:47:3:-:0;205:82;236:47;;205:82;236:47;;;;;;-1:-1:-1;;236:47:3;;-1:-1:-1;236:47:3;:::i;:::-;;205:82;;;;;;;;;;;;14:127:180;75:10;70:3;66:20;63:1;56:31;106:4;103:1;96:15;130:4;127:1;120:15;146:380;225:1;221:12;;;;268;;;289:61;;343:4;335:6;331:17;321:27;;289:61;396:2;388:6;385:14;365:18;362:38;359:161;;442:10;437:3;433:20;430:1;423:31;477:4;474:1;467:15;505:4;502:1;495:15;359:161;;146:380;;;:::o;657:545::-;759:2;754:3;751:11;748:448;;;795:1;820:5;816:2;809:17;865:4;861:2;851:19;935:2;923:10;919:19;916:1;912:27;906:4;902:38;971:4;959:10;956:20;953:47;;;-1:-1:-1;994:4:180;953:47;1049:2;1044:3;1040:12;1037:1;1033:20;1027:4;1023:31;1013:41;;1104:82;1122:2;1115:5;1112:13;1104:82;;;1167:17;;;1148:1;1137:13;1104:82;;;1108:3;;;748:448;657:545;;;:::o;1378:1352::-;1498:10;;-1:-1:-1;;;;;1520:30:180;;1517:56;;;1553:18;;:::i;:::-;1582:97;1672:6;1632:38;1664:4;1658:11;1632:38;:::i;:::-;1626:4;1582:97;:::i;:::-;1734:4;;1798:2;1787:14;;1815:1;1810:663;;;;2517:1;2534:6;2531:89;;;-1:-1:-1;2586:19:180;;;2580:26;2531:89;-1:-1:-1;;1335:1:180;1331:11;;;1327:24;1323:29;1313:40;1359:1;1355:11;;;1310:57;2633:81;;1780:944;;1810:663;604:1;597:14;;;641:4;628:18;;-1:-1:-1;;1846:20:180;;;1964:236;1978:7;1975:1;1972:14;1964:236;;;2067:19;;;2061:26;2046:42;;2159:27;;;;2127:1;2115:14;;;;1994:19;;1964:236;;;1968:3;2228:6;2219:7;2216:19;2213:201;;;2289:19;;;2283:26;-1:-1:-1;;2372:1:180;2368:14;;;2384:3;2364:24;2360:37;2356:42;2341:58;2326:74;;2213:201;-1:-1:-1;;;;;2460:1:180;2444:14;;;2440:22;2427:36;;-1:-1:-1;1378:1352:180:o;:::-;205:82:3;;;;;;",
+    "deployedSourceMap": "205:82:3:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;236:47;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::o;14:548:180:-;126:4;155:2;184;173:9;166:21;216:6;210:13;259:6;254:2;243:9;239:18;232:34;284:1;294:140;308:6;305:1;302:13;294:140;;;403:14;;;399:23;;393:30;369:17;;;388:2;365:26;358:66;323:10;;294:140;;;298:3;483:1;478:2;469:6;458:9;454:22;450:31;443:42;553:2;546;542:7;537:2;529:6;525:15;521:29;510:9;506:45;502:54;494:62;;;;14:548;;;;:::o;567:380::-;646:1;642:12;;;;689;;;710:61;;764:4;756:6;752:17;742:27;;710:61;817:2;809:6;806:14;786:18;783:38;780:161;;863:10;858:3;854:20;851:1;844:31;898:4;895:1;888:15;926:4;923:1;916:15;780:161;;567:380;;;:::o",
     "sourcePath": "d:/Projects/The-Oasis-Solidity/contracts/OasisGraveyard.sol",
     "compiler": {
         "name": "solc",
@@ -15,15 +29,15 @@
         "absolutePath": "d:/Projects/The-Oasis-Solidity/contracts/OasisGraveyard.sol",
         "exportedSymbols": {
             "OasisGraveyard": [
-                94
+                3724
             ]
         },
-        "id": 95,
+        "id": 3725,
         "license": "MIT",
         "nodeType": "SourceUnit",
         "nodes": [
             {
-                "id": 93,
+                "id": 3719,
                 "literals": [
                     "solidity",
                     "^",
@@ -31,7 +45,7 @@
                     ".4"
                 ],
                 "nodeType": "PragmaDirective",
-                "src": "33:23:2"
+                "src": "33:23:3"
             },
             {
                 "abstract": false,
@@ -39,28 +53,84 @@
                 "canonicalName": "OasisGraveyard",
                 "contractDependencies": [],
                 "contractKind": "contract",
+                "documentation": {
+                    "id": 3720,
+                    "nodeType": "StructuredDocumentation",
+                    "src": "60:141:3",
+                    "text": " @author  . 0xFirekeeper\n @title   . Oasis Graveyard\n @notice  . The resting place of burned Crazy Camels and Oasis Tokens."
+                },
                 "fullyImplemented": true,
-                "id": 94,
+                "id": 3724,
                 "linearizedBaseContracts": [
-                    94
+                    3724
                 ],
                 "name": "OasisGraveyard",
-                "nameLocation": "69:14:2",
+                "nameLocation": "214:14:3",
                 "nodeType": "ContractDefinition",
-                "nodes": [],
-                "scope": 95,
-                "src": "60:26:2",
+                "nodes": [
+                    {
+                        "constant": false,
+                        "functionSelector": "eca386af",
+                        "id": 3723,
+                        "mutability": "mutable",
+                        "name": "farewell",
+                        "nameLocation": "250:8:3",
+                        "nodeType": "VariableDeclaration",
+                        "scope": 3724,
+                        "src": "236:47:3",
+                        "stateVariable": true,
+                        "storageLocation": "default",
+                        "typeDescriptions": {
+                            "typeIdentifier": "t_string_storage",
+                            "typeString": "string"
+                        },
+                        "typeName": {
+                            "id": 3721,
+                            "name": "string",
+                            "nodeType": "ElementaryTypeName",
+                            "src": "236:6:3",
+                            "typeDescriptions": {
+                                "typeIdentifier": "t_string_storage_ptr",
+                                "typeString": "string"
+                            }
+                        },
+                        "value": {
+                            "hexValue": "5265717569657363616e7420496e20506163652e",
+                            "id": 3722,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": true,
+                            "kind": "string",
+                            "lValueRequested": false,
+                            "nodeType": "Literal",
+                            "src": "261:22:3",
+                            "typeDescriptions": {
+                                "typeIdentifier": "t_stringliteral_fde450be3cac22f2d6e4a64363d5f9048d96ad1be1bd03780c5b2bb543fabe49",
+                                "typeString": "literal_string \"Requiescant In Pace.\""
+                            },
+                            "value": "Requiescant In Pace."
+                        },
+                        "visibility": "public"
+                    }
+                ],
+                "scope": 3725,
+                "src": "205:82:3",
                 "usedErrors": []
             }
         ],
-        "src": "33:55:2"
+        "src": "33:256:3"
     },
-    "functionHashes": {},
+    "functionHashes": {
+        "farewell()": "eca386af"
+    },
     "gasEstimates": {
         "creation": {
-            "codeDepositCost": "12600",
-            "executionCost": "66",
-            "totalCost": "12666"
+            "codeDepositCost": "82000",
+            "executionCost": "infinite",
+            "totalCost": "infinite"
+        },
+        "external": {
+            "farewell()": "infinite"
         }
     }
 }
