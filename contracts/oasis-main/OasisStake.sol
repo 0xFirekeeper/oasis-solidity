@@ -7,6 +7,10 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/interfaces/IERC721Enumerable.sol";
 
+//  ==========  INTERNAL IMPORTS    ==========
+
+import "../interfaces/IOasisToken.sol";
+
 /*///////////////////////////////////////
 /////////╭━━━━┳╮╱╱╱╱╱╭━━━╮///////////////
 /////////┃╭╮╭╮┃┃╱╱╱╱╱┃╭━╮┃///////////////
@@ -23,6 +27,14 @@ import "@openzeppelin/contracts/interfaces/IERC721Enumerable.sol";
  */
 
 contract OasisStake is ReentrancyGuard {
+    /*///////////////////////////////////////////////////////////////
+                                ERRORS
+    //////////////////////////////////////////////////////////////*/
+
+    error InvalidArguments();
+    error NoTokensStaked();
+    error NoRewardsToClaim();
+
     /*///////////////////////////////////////////////////////////////
                                 STRUCTS
     //////////////////////////////////////////////////////////////*/
@@ -46,6 +58,8 @@ contract OasisStake is ReentrancyGuard {
     /// @notice Rewards per hour per token deposited in wei.
     uint256 public constant rewardsPerHour = 10 * 1e18;
 
+    mapping(uint256 => address) public idToStaker;
+
     /*///////////////////////////////////////////////////////////////
                                 CONSTRUCTOR
     //////////////////////////////////////////////////////////////*/
@@ -67,15 +81,17 @@ contract OasisStake is ReentrancyGuard {
         Staker storage currentStaker = stakers[msg.sender];
         uint256 tokenAmount = _tokenIds.length;
 
-        if (0 == tokenAmount) revert("Must stake at least one token");
+        if (0 == tokenAmount) revert InvalidArguments();
 
         if (currentStaker.amountStaked > 0) currentStaker.unclaimedRewards += calculateRewards(msg.sender);
         currentStaker.timeOfLastUpdate = block.timestamp;
 
         currentStaker.amountStaked += tokenAmount;
 
-        for (uint256 i = 0; i < tokenAmount; i++)
+        for (uint256 i = 0; i < tokenAmount; i++) {
+            idToStaker[_tokenIds[i]] = msg.sender;
             IERC721Enumerable(evolvedCamels).transferFrom(msg.sender, address(this), _tokenIds[i]);
+        }
 
         IERC20(oasisStakingToken).transfer(msg.sender, tokenAmount * 1e18);
     }
@@ -84,7 +100,7 @@ contract OasisStake is ReentrancyGuard {
         Staker storage currentStaker = stakers[msg.sender];
         uint256 tokenAmount = _tokenIds.length;
 
-        if (currentStaker.amountStaked == 0) revert("You have no tokens staked");
+        if (currentStaker.amountStaked == 0) revert NoTokensStaked();
 
         currentStaker.unclaimedRewards += calculateRewards(msg.sender);
         currentStaker.timeOfLastUpdate = block.timestamp;
@@ -92,7 +108,7 @@ contract OasisStake is ReentrancyGuard {
         currentStaker.amountStaked -= tokenAmount;
 
         for (uint256 i = 0; i < tokenAmount; i++) {
-            if (msg.sender == IERC721Enumerable(evolvedCamels).ownerOf(_tokenIds[i]))
+            if (idToStaker[_tokenIds[i]] == msg.sender)
                 IERC721Enumerable(evolvedCamels).transferFrom(address(this), msg.sender, _tokenIds[i]);
             else revert("You do not own all of these tokens");
         }
@@ -101,14 +117,15 @@ contract OasisStake is ReentrancyGuard {
     }
 
     function claimRewards() external {
+        Staker storage currentStaker = stakers[msg.sender];
         uint256 rewards = availableRewards(msg.sender);
 
-        if (rewards == 0) revert("You have no rewards to claim");
+        if (rewards == 0) revert NoRewardsToClaim();
 
-        stakers[msg.sender].timeOfLastUpdate = block.timestamp;
-        stakers[msg.sender].unclaimedRewards = 0;
+        currentStaker.timeOfLastUpdate = block.timestamp;
+        currentStaker.unclaimedRewards = 0;
 
-        IERC20(oasisToken).transfer(msg.sender, rewards);
+        IOasisToken(oasisToken).mint(msg.sender, rewards);
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -143,7 +160,7 @@ contract OasisStake is ReentrancyGuard {
     //////////////////////////////////////////////////////////////*/
 
     function calculateRewards(address _staker) private view returns (uint256 _rewards) {
-        return (((((block.timestamp - stakers[_staker].timeOfLastUpdate) * stakers[_staker].amountStaked)) *
-            rewardsPerHour) / 3600);
+        uint256 secondsSinceLastUpdate = (block.timestamp - stakers[_staker].timeOfLastUpdate);
+        return (secondsSinceLastUpdate * stakers[_staker].amountStaked * rewardsPerHour) / 3600;
     }
 }

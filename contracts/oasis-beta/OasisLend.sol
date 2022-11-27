@@ -21,7 +21,7 @@ pragma solidity ^0.8.14;
  * @author  0xFirekeeper
  * @title   OasisLend - The Oasis Lending Contract.
  * @notice  This contract allows holders of various collections to get low-interest loans against their NFTs.
- * @dev     On hold.
+ * @dev     On hold. Should add oracle.
  */
 
 /*is Ownable, Pausable*/ contract OasisLend {

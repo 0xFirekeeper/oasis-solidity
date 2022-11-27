@@ -37,7 +37,7 @@ contract EvolvedCamels is ERC721Enumerable, Ownable, IEvolvedCamels {
     //////////////////////////////////////////////////////////////*/
 
     uint256 public maxTotalTokens;
-    uint256 public mintCost = 0.077 ether;
+    uint256 public mintCost = 0.000 ether;
     address public treasury;
 
     string private _currentBaseURI;
@@ -59,14 +59,14 @@ contract EvolvedCamels is ERC721Enumerable, Ownable, IEvolvedCamels {
         require(totalSupply() + number <= maxTotalTokens, "Not enough NFTs left to mint");
         require(msg.value == mintCost * number, "Invalid amount of ETH");
 
-        _safeMint(msg.sender, number);
+        for (uint256 i = 0; i < number; i++) _safeMint(msg.sender, totalSupply());
     }
 
     function mint(address to, uint256 quantity) public payable {
         require(totalSupply() + quantity <= maxTotalTokens, "Not enough NFTs left to mint");
         require(msg.value == mintCost * quantity, "Invalid amount of ETH");
 
-        _safeMint(to, quantity);
+        for (uint256 i = 0; i < quantity; i++) _safeMint(to, totalSupply());
     }
 
     function tokenURI(uint256 tokenId_) public view virtual override returns (string memory) {
