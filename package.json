@@ -1,0 +1,34 @@
+{
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.7.3",
+    "dependencies": "^0.0.1"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^2.0.0",
+    "hardhat": "^2.12.2"
+  },
+  "name": "the-oasis-solidity",
+  "description": "Smart Contracts for The Oasis!",
+  "version": "1.0.0",
+  "main": "hardhat.config.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xFirekeeper/The-Oasis-Solidity.git"
+  },
+  "keywords": [
+    "the",
+    "oasis",
+    "evolved",
+    "camels",
+    "solidity"
+  ],
+  "author": "0xfirekeeper",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/0xFirekeeper/The-Oasis-Solidity/issues"
+  },
+  "homepage": "https://github.com/0xFirekeeper/The-Oasis-Solidity#readme"
+}

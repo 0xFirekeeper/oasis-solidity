@@ -1,18 +1,29 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.14;
+
+//  ==========  EXTERNAL IMPORTS    ==========
 
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
+/*///////////////////////////////////////
+/////////╭━━━━┳╮╱╱╱╱╱╭━━━╮///////////////
+/////////┃╭╮╭╮┃┃╱╱╱╱╱┃╭━╮┃///////////////
+/////////╰╯┃┃╰┫╰━┳━━╮┃┃╱┃┣━━┳━━┳┳━━╮/////
+/////////╱╱┃┃╱┃╭╮┃┃━┫┃┃╱┃┃╭╮┃━━╋┫━━┫/////
+/////////╱╱┃┃╱┃┃┃┃┃━┫┃╰━╯┃╭╮┣━━┃┣━━┃/////
+/////////╱╱╰╯╱╰╯╰┻━━╯╰━━━┻╯╰┻━━┻┻━━╯/////
+///////////////////////////////////////*/
+
 /**
- * @author  . 0xFirekeeper
- * @title   . Oasis Camels
- * @notice  . Test ERC721 Tokens for the Oasis.
+ * @author  0xFirekeeper
+ * @title   CrazyCamels - Basic ERC721Enumerable NFT.
+ * @notice  Used for testing other Oasis contracts in place of the Crazy Camels contract.
  */
 
-contract OasisCamels is ERC721, ERC721Enumerable, Ownable {
+contract CrazyCamels is ERC721, ERC721Enumerable, Ownable {
     using Counters for Counters.Counter;
 
     Counters.Counter private _tokenIdCounter;
