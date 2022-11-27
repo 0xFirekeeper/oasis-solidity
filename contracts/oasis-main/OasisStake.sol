@@ -41,16 +41,19 @@ contract OasisStake is ReentrancyGuard {
     address public immutable oasisToken;
     /// @notice EvolvedCamels contract address.
     address public immutable evolvedCamels;
+    /// @notice OasisStakingToken contract address.
+    address public immutable oasisStakingToken;
     /// @notice Rewards per hour per token deposited in wei.
-    uint256 public rewardsPerHour = 10 * 1e18;
+    uint256 public constant rewardsPerHour = 10 * 1e18;
 
     /*///////////////////////////////////////////////////////////////
                                 CONSTRUCTOR
     //////////////////////////////////////////////////////////////*/
 
-    constructor(address _evolvedCamels, address _oasisToken) {
+    constructor(address _evolvedCamels, address _oasisToken, address _oasisStakingToken) {
         evolvedCamels = _evolvedCamels;
         oasisToken = _oasisToken;
+        oasisStakingToken = _oasisStakingToken;
     }
 
     /*///////////////////////////////////////////////////////////////
@@ -73,6 +76,8 @@ contract OasisStake is ReentrancyGuard {
 
         for (uint256 i = 0; i < tokenAmount; i++)
             IERC721Enumerable(evolvedCamels).transferFrom(msg.sender, address(this), _tokenIds[i]);
+
+        IERC20(oasisStakingToken).transfer(msg.sender, tokenAmount * 1e18);
     }
 
     function unstake(uint256[] calldata _tokenIds) external nonReentrant {
@@ -84,13 +89,15 @@ contract OasisStake is ReentrancyGuard {
         currentStaker.unclaimedRewards += calculateRewards(msg.sender);
         currentStaker.timeOfLastUpdate = block.timestamp;
 
+        currentStaker.amountStaked -= tokenAmount;
+
         for (uint256 i = 0; i < tokenAmount; i++) {
             if (msg.sender == IERC721Enumerable(evolvedCamels).ownerOf(_tokenIds[i]))
                 IERC721Enumerable(evolvedCamels).transferFrom(address(this), msg.sender, _tokenIds[i]);
             else revert("You do not own all of these tokens");
         }
 
-        currentStaker.amountStaked -= tokenAmount;
+        IERC20(oasisStakingToken).transferFrom(msg.sender, address(this), tokenAmount * 1e18);
     }
 
     function claimRewards() external {
