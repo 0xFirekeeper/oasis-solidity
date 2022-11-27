@@ -324,5 +324,29 @@ describe("Deployment and Setup", function () {
             expect(await evolvedCamels.ownerOf(3)).to.equal(owner.address);
             expect(await oasisStakingToken.balanceOf(owner.address)).to.equal(0);
         });
+
+        it("Should get token ids staked", async function () {
+            const {
+                crazyCamels,
+                evolvedCamels,
+                oasisFeatures,
+                oasisStakingToken,
+                oasisGraveyard,
+                oasisStake,
+                oasisToken,
+                owner,
+                addr1,
+                addr2,
+            } = await deploy(true, false);
+
+            await evolvedCamels.setApprovalForAll(oasisStake.address, true);
+            await oasisStake.stake([1, 2, 3, 4, 5]);
+            expect(await evolvedCamels.ownerOf(3)).to.equal(oasisStake.address);
+            expect(await oasisStakingToken.balanceOf(owner.address)).to.equal(
+                ethers.utils.parseEther("5")
+            );
+
+            console.log(await oasisStake.getStakedTokens(owner.address));
+        });
     });
 });

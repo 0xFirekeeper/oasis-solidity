@@ -31,14 +31,25 @@ contract OasisStake is ReentrancyGuard {
                                 ERRORS
     //////////////////////////////////////////////////////////////*/
 
+    /// @notice Error for if arguments are invalid.
     error InvalidArguments();
+    /// @notice Error for if no tokens are staked.
     error NoTokensStaked();
+    /// @notice Error for if no rewards are available to claim.
     error NoRewardsToClaim();
+    /// @notice Error for if is not owner.
+    error NotOwner();
 
     /*///////////////////////////////////////////////////////////////
                                 STRUCTS
     //////////////////////////////////////////////////////////////*/
 
+    /**
+     * @notice  Staker data struct.
+     * @param   amountStaked  Amount of tokens staked.
+     * @param   timeOfLastUpdate Time since the last user contract interaction.
+     * @param   unclaimedRewards Rewards since the last user contract interaction.
+     */
     struct Staker {
         uint256 amountStaked;
         uint256 timeOfLastUpdate;
@@ -57,13 +68,21 @@ contract OasisStake is ReentrancyGuard {
     address public immutable oasisStakingToken;
     /// @notice Rewards per hour per token deposited in wei.
     uint256 public constant rewardsPerHour = 10 * 1e18;
-
+    /// @notice User Address to Staker info.
+    mapping(address => Staker) public stakers;
+    /// @notice Token IDs to their staker address.
     mapping(uint256 => address) public idToStaker;
 
     /*///////////////////////////////////////////////////////////////
                                 CONSTRUCTOR
     //////////////////////////////////////////////////////////////*/
 
+    /**
+     * @notice  OasisStake constructor.
+     * @param   _evolvedCamels  EvolvedCamels contract address.
+     * @param   _oasisToken OasisToken contract address.
+     * @param   _oasisStakingToken OasisStakingToken contract address.
+     */
     constructor(address _evolvedCamels, address _oasisToken, address _oasisStakingToken) {
         evolvedCamels = _evolvedCamels;
         oasisToken = _oasisToken;
@@ -74,9 +93,10 @@ contract OasisStake is ReentrancyGuard {
                                 USER FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    /// @notice User Address to Staker info.
-    mapping(address => Staker) public stakers;
-
+    /**
+     * @notice  Stakes specific token IDs and initializes mappings, also sends an ERC20 representing the stake.
+     * @param   _tokenIds  Token IDs to stake.
+     */
     function stake(uint256[] calldata _tokenIds) external nonReentrant {
         Staker storage currentStaker = stakers[msg.sender];
         uint256 tokenAmount = _tokenIds.length;
@@ -96,6 +116,10 @@ contract OasisStake is ReentrancyGuard {
         IERC20(oasisStakingToken).transfer(msg.sender, tokenAmount * 1e18);
     }
 
+    /**
+     * @notice  Unstakes specific token IDs and updates mappings,
+     * @param   _tokenIds  Token IDs to stake.
+     */
     function unstake(uint256[] calldata _tokenIds) external nonReentrant {
         Staker storage currentStaker = stakers[msg.sender];
         uint256 tokenAmount = _tokenIds.length;
@@ -108,14 +132,18 @@ contract OasisStake is ReentrancyGuard {
         currentStaker.amountStaked -= tokenAmount;
 
         for (uint256 i = 0; i < tokenAmount; i++) {
-            if (idToStaker[_tokenIds[i]] == msg.sender)
+            if (idToStaker[_tokenIds[i]] == msg.sender) {
                 IERC721Enumerable(evolvedCamels).transferFrom(address(this), msg.sender, _tokenIds[i]);
-            else revert("You do not own all of these tokens");
+                delete idToStaker[_tokenIds[i]];
+            } else revert NotOwner();
         }
 
         IERC20(oasisStakingToken).transferFrom(msg.sender, address(this), tokenAmount * 1e18);
     }
 
+    /**
+     * @notice  Claims unclaimed and new rewards as OST new mints.
+     */
     function claimRewards() external {
         Staker storage currentStaker = stakers[msg.sender];
         uint256 rewards = availableRewards(msg.sender);
@@ -132,20 +160,31 @@ contract OasisStake is ReentrancyGuard {
                                 VIEW FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
+    /**
+     * @notice  Returns the sum of unclaimed and new rewards.
+     * @param   _staker  Address of staker.
+     * @return  availableRewards_  Available OST rewards for '_staker'.
+     */
     function availableRewards(address _staker) public view returns (uint256 availableRewards_) {
         return calculateRewards(_staker) + stakers[_staker].unclaimedRewards;
     }
 
-    function getStakedTokens(address _user) public view returns (uint256[] memory stakedTokens_) {
+    /**
+     * @notice  Returns the currently staked token IDs of a staker.
+     * @dev     This can get very expensive. I did not include token tracking in the struct to have less user gas costs, this is the tradeoff.
+     * @param   _staker  Address of staker.
+     * @return  stakedTokens_  Array of staked token ID of '_staker'.
+     */
+    function getStakedTokens(address _staker) public view returns (uint256[] memory stakedTokens_) {
         uint256 contractStaked = IERC721Enumerable(evolvedCamels).balanceOf(address(this));
-        uint256 userStaked = stakers[_user].amountStaked;
+        uint256 userStaked = stakers[_staker].amountStaked;
         uint256[] memory userTokenIds = new uint256[](userStaked);
 
         uint256 currentTokenId;
         uint256 currentIndex;
         for (uint256 i = 0; i < contractStaked; i++) {
             currentTokenId = IERC721Enumerable(evolvedCamels).tokenOfOwnerByIndex(address(this), i);
-            if (_user == IERC721Enumerable(evolvedCamels).ownerOf(currentTokenId)) {
+            if (_staker == idToStaker[currentTokenId]) {
                 userTokenIds[currentIndex] = currentTokenId;
                 currentIndex = currentIndex + 1;
                 if (currentIndex == userStaked) break;
@@ -159,6 +198,11 @@ contract OasisStake is ReentrancyGuard {
                                 PRIVATE FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
+    /**
+     * @notice  Calculates and returns the total rewards since the last update.
+     * @param   _staker  Address of staker.
+     * @return  _rewards  Total OST rewards accumulated since last update.
+     */
     function calculateRewards(address _staker) private view returns (uint256 _rewards) {
         uint256 secondsSinceLastUpdate = (block.timestamp - stakers[_staker].timeOfLastUpdate);
         return (secondsSinceLastUpdate * stakers[_staker].amountStaked * rewardsPerHour) / 3600;
