@@ -1,2 +1,2 @@
-# The-Oasis-Solidity
+# oasis-solidity
  Smart Contracts for The Oasis!
