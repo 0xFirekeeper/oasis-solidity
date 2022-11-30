@@ -255,10 +255,7 @@ describe("Deployment and Setup", function () {
             );
 
             await oasisFeatures.buyNFT(0);
-            await expect(oasisFeatures.buyNFT(0)).to.be.revertedWithCustomError(
-                oasisFeatures,
-                "InvalidArguments"
-            );
+            await expect(oasisFeatures.buyNFT(0)).to.be.revertedWith("Invalid Arguments");
             expect(await evolvedCamels.ownerOf(1)).to.equal(owner.address);
             expect(await crazyCamels.ownerOf(2)).to.equal(owner.address);
         });
@@ -280,7 +277,6 @@ describe("Deployment and Setup", function () {
             await oasisFeatures.setOSTRewardPerCCBurned("1");
             await oasisFeatures.setOSTRewardPerMint("1");
             await oasisFeatures.withdrawETH();
-            await oasisFeatures.withdrawOST();
         });
     });
 

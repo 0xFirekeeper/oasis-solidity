@@ -23,13 +23,6 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract OasisStakingToken is ERC20, Ownable {
     /*///////////////////////////////////////////////////////////////
-                                ERRORS
-    //////////////////////////////////////////////////////////////*/
-
-    /// @notice Error for if transfer conditions are unmet.
-    error Soulbound();
-
-    /*///////////////////////////////////////////////////////////////
                                 STATE VARIABLES
     //////////////////////////////////////////////////////////////*/
 
@@ -56,7 +49,7 @@ contract OasisStakingToken is ERC20, Ownable {
     function _beforeTokenTransfer(address _from, address _to, uint256 _amount) internal virtual override {
         if (_from == address(0) || _from == oasisStake || _to == oasisStake)
             super._beforeTokenTransfer(_from, _to, _amount);
-        else revert Soulbound();
+        else revert("Soulbound");
     }
 
     /*///////////////////////////////////////////////////////////////

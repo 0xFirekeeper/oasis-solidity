@@ -36,19 +36,6 @@ contract OasisFeatures is Ownable, Pausable, ReentrancyGuard, IERC721Receiver {
     using Address for address payable;
 
     /*///////////////////////////////////////////////////////////////
-                                ERRORS
-    //////////////////////////////////////////////////////////////*/
-
-    /// @notice Error for if arguments are invalid.
-    error InvalidArguments();
-    /// @notice Error for if msg.value is invalid.
-    error InvalidETHAmount();
-    /// @notice Error for if balance too low.
-    error BalanceTooLow();
-    /// @notice Error for if ERC721 received from invalid sender.
-    error InvalidERC721Sender();
-
-    /*///////////////////////////////////////////////////////////////
                                 STRUCTS
     //////////////////////////////////////////////////////////////*/
 
@@ -112,7 +99,7 @@ contract OasisFeatures is Ownable, Pausable, ReentrancyGuard, IERC721Receiver {
      * @param   _tokenIds  Crazy Camels token IDs to be burned.
      */
     function oasisBurn(uint256[] calldata _tokenIds) external nonReentrant whenNotPaused {
-        if (0 == _tokenIds.length) revert InvalidArguments();
+        if (0 == _tokenIds.length) revert("Invalid Arguments");
 
         for (uint256 i = 0; i < _tokenIds.length; i++)
             IERC721(crazyCamels).transferFrom(msg.sender, oasisGraveyard, _tokenIds[i]);
@@ -127,7 +114,7 @@ contract OasisFeatures is Ownable, Pausable, ReentrancyGuard, IERC721Receiver {
     function oasisMint(uint256 _amount) external payable nonReentrant whenNotPaused {
         uint256 ostReward = ostRewardPerMint * _amount;
 
-        if (msg.value != IEvolvedCamels(evolvedCamels).mintCost() * _amount) revert InvalidETHAmount();
+        if (msg.value != IEvolvedCamels(evolvedCamels).mintCost() * _amount) revert("Invalid ETH Amount");
 
         uint256 startingTokenId = IERC721Enumerable(evolvedCamels).totalSupply();
         IEvolvedCamels(evolvedCamels).publicSaleMint{value: msg.value}(_amount);
@@ -143,8 +130,8 @@ contract OasisFeatures is Ownable, Pausable, ReentrancyGuard, IERC721Receiver {
      * @param   _quantity  Amount of OST (without decimals) to be purchased.
      */
     function buyOST(uint256 _quantity) external payable nonReentrant whenNotPaused {
-        if (_quantity == 0) revert InvalidArguments();
-        if (msg.value != weiPricePerOst * _quantity) revert InvalidETHAmount();
+        if (_quantity == 0) revert("Invalid Arguments");
+        if (msg.value != weiPricePerOst * _quantity) revert("Invalid ETH Amount");
 
         IOasisToken(oasisToken).mint(msg.sender, _quantity * 1e18);
     }
@@ -156,8 +143,8 @@ contract OasisFeatures is Ownable, Pausable, ReentrancyGuard, IERC721Receiver {
     function buyNFT(uint256 _index) external nonReentrant whenNotPaused {
         NFT[] memory nfts = nftsForSale;
 
-        if (_index >= nfts.length) revert InvalidArguments();
-        if (IERC20(oasisToken).balanceOf(msg.sender) < nfts[_index].nftPrice) revert BalanceTooLow();
+        if (_index >= nfts.length) revert("Invalid Arguments");
+        if (IERC20(oasisToken).balanceOf(msg.sender) < nfts[_index].nftPrice) revert("Balance Too Low");
 
         _removeNFT(_index);
 
@@ -170,15 +157,23 @@ contract OasisFeatures is Ownable, Pausable, ReentrancyGuard, IERC721Receiver {
      * @param   _index  Index of the NFT in nftsForSale array.
      * @return  nftForSale_  NFT item at '_index'.
      */
-    function viewNft(uint256 _index) external view returns (NFT memory nftForSale_) {
+    function viewNft(uint256 _index) public view returns (NFT memory nftForSale_) {
         return nftsForSale[_index];
+    }
+
+    /**
+     * @notice  Returns the all NFTs for sale.
+     * @return  nftForSale_  NFT array of NFTs for sale.
+     */
+    function viewNfts() public view returns (NFT[] memory nftForSale_) {
+        return nftsForSale;
     }
 
     /**
      * @notice  Returns the length of 'nftsForSale'.
      * @return  nftsForSaleAmount_  Length of 'nftsForSale'.
      */
-    function totalNfts() external view returns (uint256 nftsForSaleAmount_) {
+    function totalNfts() public view returns (uint256 nftsForSaleAmount_) {
         return nftsForSale.length;
     }
 
@@ -227,11 +222,6 @@ contract OasisFeatures is Ownable, Pausable, ReentrancyGuard, IERC721Receiver {
     /// @notice Transfers contract ETH balance to owner.
     function withdrawETH() external onlyOwner {
         payable(msg.sender).sendValue(address(this).balance);
-    }
-
-    /// @notice Transfers contract OST balance to owner.
-    function withdrawOST() external onlyOwner {
-        IERC20(oasisToken).transfer(msg.sender, IERC20(oasisToken).balanceOf(address(this)));
     }
 
     /**

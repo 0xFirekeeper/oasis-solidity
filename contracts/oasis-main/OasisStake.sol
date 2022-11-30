@@ -28,19 +28,6 @@ import "../interfaces/IOasisToken.sol";
 
 contract OasisStake is ReentrancyGuard {
     /*///////////////////////////////////////////////////////////////
-                                ERRORS
-    //////////////////////////////////////////////////////////////*/
-
-    /// @notice Error for if arguments are invalid.
-    error InvalidArguments();
-    /// @notice Error for if no tokens are staked.
-    error NoTokensStaked();
-    /// @notice Error for if no rewards are available to claim.
-    error NoRewardsToClaim();
-    /// @notice Error for if is not owner.
-    error NotOwner();
-
-    /*///////////////////////////////////////////////////////////////
                                 STRUCTS
     //////////////////////////////////////////////////////////////*/
 
@@ -101,7 +88,7 @@ contract OasisStake is ReentrancyGuard {
         Staker storage currentStaker = stakers[msg.sender];
         uint256 tokenAmount = _tokenIds.length;
 
-        if (0 == tokenAmount) revert InvalidArguments();
+        if (0 == tokenAmount) revert("Invalid Arguments");
 
         if (currentStaker.amountStaked > 0) currentStaker.unclaimedRewards += calculateRewards(msg.sender);
         currentStaker.timeOfLastUpdate = block.timestamp;
@@ -124,7 +111,7 @@ contract OasisStake is ReentrancyGuard {
         Staker storage currentStaker = stakers[msg.sender];
         uint256 tokenAmount = _tokenIds.length;
 
-        if (currentStaker.amountStaked == 0) revert NoTokensStaked();
+        if (currentStaker.amountStaked == 0) revert("No Tokens Staked");
 
         currentStaker.unclaimedRewards += calculateRewards(msg.sender);
         currentStaker.timeOfLastUpdate = block.timestamp;
@@ -135,7 +122,7 @@ contract OasisStake is ReentrancyGuard {
             if (idToStaker[_tokenIds[i]] == msg.sender) {
                 IERC721Enumerable(evolvedCamels).transferFrom(address(this), msg.sender, _tokenIds[i]);
                 delete idToStaker[_tokenIds[i]];
-            } else revert NotOwner();
+            } else revert("Not Owner");
         }
 
         IERC20(oasisStakingToken).transferFrom(msg.sender, address(this), tokenAmount * 1e18);
@@ -148,7 +135,7 @@ contract OasisStake is ReentrancyGuard {
         Staker storage currentStaker = stakers[msg.sender];
         uint256 rewards = availableRewards(msg.sender);
 
-        if (rewards == 0) revert NoRewardsToClaim();
+        if (rewards == 0) revert("No Rewards To Claim");
 
         currentStaker.timeOfLastUpdate = block.timestamp;
         currentStaker.unclaimedRewards = 0;
