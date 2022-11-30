@@ -43,10 +43,8 @@ contract OasisFeatures is Ownable, Pausable, ReentrancyGuard, IERC721Receiver {
     error InvalidArguments();
     /// @notice Error for if msg.value is invalid.
     error InvalidETHAmount();
-    /// @notice Error for if contract balance too low.
-    error ContractBalanceTooLow();
-    /// @notice Error for if user balance too low.
-    error UserBalanceTooLow();
+    /// @notice Error for if balance too low.
+    error BalanceTooLow();
     /// @notice Error for if ERC721 received from invalid sender.
     error InvalidERC721Sender();
 
@@ -130,7 +128,6 @@ contract OasisFeatures is Ownable, Pausable, ReentrancyGuard, IERC721Receiver {
         uint256 ostReward = ostRewardPerMint * _amount;
 
         if (msg.value != IEvolvedCamels(evolvedCamels).mintCost() * _amount) revert InvalidETHAmount();
-        if (IERC20(oasisToken).balanceOf(address(this)) < ostReward) revert ContractBalanceTooLow();
 
         uint256 startingTokenId = IERC721Enumerable(evolvedCamels).totalSupply();
         IEvolvedCamels(evolvedCamels).publicSaleMint{value: msg.value}(_amount);
@@ -160,7 +157,7 @@ contract OasisFeatures is Ownable, Pausable, ReentrancyGuard, IERC721Receiver {
         NFT[] memory nfts = nftsForSale;
 
         if (_index >= nfts.length) revert InvalidArguments();
-        if (IERC20(oasisToken).balanceOf(msg.sender) < nfts[_index].nftPrice) revert UserBalanceTooLow();
+        if (IERC20(oasisToken).balanceOf(msg.sender) < nfts[_index].nftPrice) revert BalanceTooLow();
 
         _removeNFT(_index);
 

@@ -61,8 +61,8 @@ describe("Deployment and Setup", function () {
             oasisFeatures.address
         );
 
-        await oasisToken.mint(oasisFeatures.address, ethers.utils.parseEther("500000000"));
-        await oasisToken.mint(oasisStake.address, ethers.utils.parseEther("500000000"));
+        // await oasisToken.mint(oasisFeatures.address, ethers.utils.parseEther("500000000"));
+        // await oasisToken.mint(oasisStake.address, ethers.utils.parseEther("500000000"));
         await oasisStakingToken.mint(oasisStake.address, ethers.utils.parseEther("8888"));
 
         return {
@@ -167,7 +167,7 @@ describe("Deployment and Setup", function () {
             );
         });
 
-        it("Should confirm oasisBurn([1,2,3,4,5])", async function () {
+        it("Should confirm oasisBurn", async function () {
             const {
                 crazyCamels,
                 evolvedCamels,
@@ -193,7 +193,7 @@ describe("Deployment and Setup", function () {
             );
         });
 
-        it("Should confirm buyOST(100000)", async function () {
+        it("Should confirm buyOST", async function () {
             const {
                 crazyCamels,
                 evolvedCamels,
@@ -217,7 +217,7 @@ describe("Deployment and Setup", function () {
             );
         });
 
-        it("Should confirm buyNFT(0)", async function () {
+        it("Should confirm buyNFT", async function () {
             const {
                 crazyCamels,
                 evolvedCamels,
@@ -238,9 +238,49 @@ describe("Deployment and Setup", function () {
                 ethers.utils.parseEther("100000")
             );
 
-            await oasisToken.approve(oasisFeatures.address, ethers.utils.parseEther("100000"));
+            await crazyCamels.setApprovalForAll(oasisFeatures.address, true);
+            await oasisFeatures.depositNFT(
+                crazyCamels.address,
+                2,
+                ethers.utils.parseEther("100000")
+            );
+            await oasisFeatures.withdrawNFT(crazyCamels.address, 2);
+
+            // const totalNftsForSale = await oasisFeatures.totalNfts();
+            // for (i = 0; i < totalNftsForSale; i++) console.log(await oasisFeatures.viewNft(i));
+
+            await oasisToken.approve(
+                oasisFeatures.address,
+                ethers.utils.parseEther("100000000000")
+            );
+
             await oasisFeatures.buyNFT(0);
+            await expect(oasisFeatures.buyNFT(0)).to.be.revertedWithCustomError(
+                oasisFeatures,
+                "InvalidArguments"
+            );
             expect(await evolvedCamels.ownerOf(1)).to.equal(owner.address);
+            expect(await crazyCamels.ownerOf(2)).to.equal(owner.address);
+        });
+
+        it("Should confirm owner functions", async function () {
+            const {
+                crazyCamels,
+                evolvedCamels,
+                oasisFeatures,
+                oasisStakingToken,
+                oasisGraveyard,
+                oasisStake,
+                oasisToken,
+                owner,
+                addr1,
+                addr2,
+            } = await deploy(false, false);
+
+            await oasisFeatures.setOSTRewardPerCCBurned("1");
+            await oasisFeatures.setOSTRewardPerMint("1");
+            await oasisFeatures.withdrawETH();
+            await oasisFeatures.withdrawOST();
         });
     });
 
@@ -340,10 +380,10 @@ describe("Deployment and Setup", function () {
             } = await deploy(true, false);
 
             await evolvedCamels.setApprovalForAll(oasisStake.address, true);
-            await oasisStake.stake([1, 2, 3, 4, 5]);
-            expect(await evolvedCamels.ownerOf(3)).to.equal(oasisStake.address);
+            await oasisStake.stake([1]);
+            expect(await evolvedCamels.ownerOf(1)).to.equal(oasisStake.address);
             expect(await oasisStakingToken.balanceOf(owner.address)).to.equal(
-                ethers.utils.parseEther("5")
+                ethers.utils.parseEther("1")
             );
 
             console.log(await oasisStake.getStakedTokens(owner.address));

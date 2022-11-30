@@ -144,7 +144,7 @@ contract OasisStake is ReentrancyGuard {
     /**
      * @notice  Claims unclaimed and new rewards as OST new mints.
      */
-    function claimRewards() external {
+    function claimRewards() external nonReentrant {
         Staker storage currentStaker = stakers[msg.sender];
         uint256 rewards = availableRewards(msg.sender);
 
