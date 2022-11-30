@@ -17,5 +17,5 @@ pragma solidity ^0.8.14;
  */
 
 contract OasisGraveyard {
-    bytes17 public constant EVOLVED_CAMELS_NEVER_DIE = "Veni, vidi, vici.";
+    string public constant EVOLVED_CAMELS_NEVER_DIE = "Veni, vidi, vici.";
 }
