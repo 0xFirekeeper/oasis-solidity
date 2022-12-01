@@ -90,14 +90,14 @@ contract OasisStake is ReentrancyGuard {
 
         if (0 == tokenAmount) revert("Invalid Arguments");
 
-        if (currentStaker.amountStaked > 0) currentStaker.unclaimedRewards += calculateRewards(msg.sender);
+        if (currentStaker.amountStaked > 0) currentStaker.unclaimedRewards += _calculateRewards(msg.sender);
         currentStaker.timeOfLastUpdate = block.timestamp;
 
         currentStaker.amountStaked += tokenAmount;
 
         for (uint256 i = 0; i < tokenAmount; i++) {
             idToStaker[_tokenIds[i]] = msg.sender;
-            IERC721Enumerable(evolvedCamels).transferFrom(msg.sender, address(this), _tokenIds[i]);
+            IERC721(evolvedCamels).transferFrom(msg.sender, address(this), _tokenIds[i]);
         }
 
         IERC20(oasisStakingToken).transfer(msg.sender, tokenAmount * 1e18);
@@ -113,14 +113,14 @@ contract OasisStake is ReentrancyGuard {
 
         if (currentStaker.amountStaked == 0) revert("No Tokens Staked");
 
-        currentStaker.unclaimedRewards += calculateRewards(msg.sender);
+        currentStaker.unclaimedRewards += _calculateRewards(msg.sender);
         currentStaker.timeOfLastUpdate = block.timestamp;
 
         currentStaker.amountStaked -= tokenAmount;
 
         for (uint256 i = 0; i < tokenAmount; i++) {
             if (idToStaker[_tokenIds[i]] == msg.sender) {
-                IERC721Enumerable(evolvedCamels).transferFrom(address(this), msg.sender, _tokenIds[i]);
+                IERC721(evolvedCamels).transferFrom(address(this), msg.sender, _tokenIds[i]);
                 delete idToStaker[_tokenIds[i]];
             } else revert("Not Owner");
         }
@@ -153,7 +153,7 @@ contract OasisStake is ReentrancyGuard {
      * @return  availableRewards_  Available OST rewards for '_staker'.
      */
     function availableRewards(address _staker) public view returns (uint256 availableRewards_) {
-        return calculateRewards(_staker) + stakers[_staker].unclaimedRewards;
+        return _calculateRewards(_staker) + stakers[_staker].unclaimedRewards;
     }
 
     /**
@@ -163,7 +163,7 @@ contract OasisStake is ReentrancyGuard {
      * @return  stakedTokens_  Array of staked token ID of '_staker'.
      */
     function getStakedTokens(address _staker) public view returns (uint256[] memory stakedTokens_) {
-        uint256 contractStaked = IERC721Enumerable(evolvedCamels).balanceOf(address(this));
+        uint256 contractStaked = IERC721(evolvedCamels).balanceOf(address(this));
         uint256 userStaked = stakers[_staker].amountStaked;
         uint256[] memory userTokenIds = new uint256[](userStaked);
 
@@ -190,7 +190,7 @@ contract OasisStake is ReentrancyGuard {
      * @param   _staker  Address of staker.
      * @return  _rewards  Total OST rewards accumulated since last update.
      */
-    function calculateRewards(address _staker) private view returns (uint256 _rewards) {
+    function _calculateRewards(address _staker) private view returns (uint256 _rewards) {
         uint256 secondsSinceLastUpdate = (block.timestamp - stakers[_staker].timeOfLastUpdate);
         return (secondsSinceLastUpdate * stakers[_staker].amountStaked * rewardsPerHour) / 3600;
     }
