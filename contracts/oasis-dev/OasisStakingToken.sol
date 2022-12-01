@@ -17,7 +17,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 /**
  * @author  0xFirekeeper
- * @title   OasisOwnerToken - Placeholder token used by OasisStake.
+ * @title   OasisStakingToken - Placeholder token used by OasisStake.
  * @notice  Conditionally transferrable ERC-20 awarded 1:1 for each Evolved Camels staked in the Oasis.
  */
 
